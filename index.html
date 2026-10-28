@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="it" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radiografia di coppia: quale archetipo di fidanzata sei?</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cinzel Decorative, Quicksand & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Cinzel Decorative', 'cursive', 'serif'],
+                        quicksand: ['Quicksand', 'sans-serif'],
+                    },
+                    colors: {
+                        winxPink: '#ff2a8d',
+                        winxMagenta: '#d90479',
+                        winxPurple: '#7b2cbf',
+                        winxGold: '#ffd700',
+                        winxLight: '#fff0f5',
+                        winxDark: '#19002e'
+                    },
+                    animation: {
+                        'float': 'float 3.5s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2.5s infinite',
+                        'wing-flap': 'wingFlap 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(255, 42, 141, 0.5), inset 0 0 15px rgba(255, 215, 0, 0.2)' },
+                            '50%': { boxShadow: '0 0 40px rgba(255, 215, 0, 0.85), inset 0 0 25px rgba(255, 42, 141, 0.4)' },
+                        },
+                        wingFlap: {
+                            '0%, 100%': { transform: 'scaleX(1) rotate(0deg)' },
+                            '50%': { transform: 'scaleX(0.92) rotate(3deg)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 50% 0%, #4a0e78 0%, #240046 45%, #10002b 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .font-display {
+            font-family: 'Cinzel Decorative', cursive;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10002b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ff2a8d, #ffd700);
+            border-radius: 99px;
+        }
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 42, 141, 0.06) 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1.5px solid rgba(255, 215, 0, 0.28);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 42, 141, 0.25);
+        }
+        .fairy-glow {
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.75), 0 0 30px rgba(255, 42, 141, 0.8);
+        }
+        .option-card {
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.6s ease;
+        }
+        .option-card:hover::before {
+            left: 130%;
+        }
+        .option-card:hover {
+            transform: translateY(-3px) scale(1.01);
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255, 42, 141, 0.28), rgba(123, 44, 191, 0.38));
+            box-shadow: 0 10px 25px -5px rgba(255, 42, 141, 0.45), 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+        .option-card.selected {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255, 42, 141, 0.55), rgba(123, 44, 191, 0.75));
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.75);
+            transform: scale(1.02);
+        }
+        .sparkle-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background: radial-gradient(circle, #fff 20%, #ffd700 80%, transparent 100%);
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            opacity: var(--opacity);
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.7) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.3) rotate(45deg); box-shadow: 0 0 10px #ffd700; }
+        }
+        /* Click particle burst */
+        .magic-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 1.35rem;
+            user-select: none;
+            animation: particleFly 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes particleFly {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.5) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(1.4) rotate(var(--rot));
+            }
+        }
+        /* Screen transition animation */
+        .fade-slide-enter {
+            animation: fadeSlideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-full relative selection:bg-winxPink selection:text-white">
+
+    <!-- Floating Sparkle Background -->
+    <div class="sparkle-bg" id="sparkleBg"></div>
+
+    <!-- Witty Reaction Toast Popup -->
+    <div id="reaction-toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 transform -translate-y-4">
+        <div class="px-5 py-2.5 rounded-full bg-gradient-to-r from-pink-600 via-purple-700 to-indigo-800 border-2 border-yellow-300 shadow-[0_0_25px_rgba(255,215,0,0.8)] flex items-center gap-2.5 text-white font-bold text-sm sm:text-base whitespace-nowrap">
+            <span id="reaction-toast-icon" class="text-xl">✨</span>
+            <span id="reaction-toast-text">Polvere di Fata registrata!</span>
+        </div>
+    </div>
+
+    <!-- Top Utility Bar (Audio toggle & Clinic badge) -->
+    <div class="relative z-20 w-full max-w-4xl mx-auto px-4 pt-4 flex items-center justify-between">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-pink-400/40 text-pink-200 text-xs sm:text-sm font-semibold backdrop-blur-md">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span>
+            <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+            <span>Clinica Psico-Fatata di Alfea</span>
+        </div>
+
+        <button id="sound-toggle-btn" onclick="toggleSound()" class="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-yellow-300/40 text-yellow-200 text-xs sm:text-sm font-semibold backdrop-blur-md transition flex items-center gap-2" title="Attiva/Disattiva Suoni Magici">
+            <i id="sound-icon" class="fa-solid fa-volume-high text-yellow-300"></i>
+            <span id="sound-label" class="hidden sm:inline">Effetti Magici: ON</span>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 flex-1 flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 max-w-4xl mx-auto w-full">
+
+        <!-- HEADER / BRANDING -->
+        <header class="text-center mb-6 sm:mb-8">
+            <h1 class="text-2xl sm:text-4xl md:text-5xl font-black tracking-wider fairy-glow text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-yellow-200 to-pink-300 font-display leading-tight">
+                Radiografia di coppia: quale archetipo di fidanzata sei?
+            </h1>
+        </header>
+
+        <!-- APP CONTENT CARD -->
+        <main class="w-full glass-card rounded-3xl p-5 sm:p-8 md:p-10 relative transition-all duration-300">
+            
+            <!-- 1. INTRO SCREEN -->
+            <div id="screen-welcome" class="text-center py-4 sm:py-8 space-y-6 fade-slide-enter">
+                <!-- Magical Emblem SVG -->
+                <div class="relative w-32 h-32 sm:w-36 sm:h-36 mx-auto animate-float">
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-pink-500 via-purple-500 to-yellow-300 blur-md opacity-75 animate-pulse"></div>
+                    <div class="relative w-full h-full rounded-full bg-gradient-to-tr from-purple-900 via-pink-700 to-amber-500 p-1 border-4 border-yellow-300 shadow-2xl flex items-center justify-center">
+                        <svg class="w-20 h-20 text-yellow-200 drop-shadow-[0_0_10px_rgba(255,215,0,0.8)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Fairy Wings + Heart Stethoscope -->
+                            <path class="animate-wing-flap origin-center" d="M50 48C32 20 8 24 12 45C15 60 35 62 50 55C65 62 85 60 88 45C92 24 68 20 50 48Z" fill="url(#wingGrad)" fill-opacity="0.7" stroke="#FFF" stroke-width="2"/>
+                            <path d="M50 54C36 65 20 75 28 86C34 94 46 82 50 66C54 82 66 94 72 86C80 75 64 65 50 54Z" fill="url(#wingGrad)" fill-opacity="0.55" stroke="#FFD700" stroke-width="1.5"/>
+                            <path d="M50 38C44 30 33 32 33 41C33 52 50 61 50 67C50 61 67 52 67 41C67 32 56 30 50 38Z" fill="#FF2A8D" stroke="#FFD700" stroke-width="2.5"/>
+                            <circle cx="50" cy="20" r="4" fill="#FFD700"/>
+                            <defs>
+                                <linearGradient id="wingGrad" x1="10" y1="20" x2="90" y2="85" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#FF85C0"/>
+                                    <stop offset="0.5" stop-color="#FFF0F5"/>
+                                    <stop offset="1" stop-color="#FFD700"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="space-y-4 max-w-2xl mx-auto">
+                    <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-yellow-400/20 border border-yellow-300/50 text-yellow-200 text-xs sm:text-sm font-bold uppercase tracking-widest">
+                        ✨ Test Psicologico-Fatato • Clinica di Alfea ✨
+                    </div>
+                    <p class="text-pink-100 text-base sm:text-lg leading-relaxed font-medium">
+                        Dalla Clinica Psico-Fatata di Alfea: 4 domande preliminari + 15 scenari ad alto tasso di disagio per scoprire se sei <strong class="text-rose-300">La Pazza (Bloom)</strong>, <strong class="text-cyan-300">L'Equilibrata (Aisha)</strong>, <strong class="text-emerald-300">La Perfetta (Flora)</strong> o <strong class="text-amber-300">La Rompipalle (Stella)</strong>!
+                    </p>
+                </div>
+
+                <!-- Archetype Preview Badges -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-2xl mx-auto pt-2 text-xs sm:text-sm">
+                    <div class="p-2.5 rounded-2xl bg-white/5 border border-rose-400/40 text-rose-200 font-semibold flex flex-col items-center justify-center gap-1">
+                        <span class="text-lg">🔥🧚‍♀️</span>
+                        <span>La Pazza • <strong>Bloom</strong></span>
+                    </div>
+                    <div class="p-2.5 rounded-2xl bg-white/5 border border-cyan-400/40 text-cyan-200 font-semibold flex flex-col items-center justify-center gap-1">
+                        <span class="text-lg">🌊🧚🏽‍♀️</span>
+                        <span>L'Equilibrata • <strong>Aisha</strong></span>
+                    </div>
+                    <div class="p-2.5 rounded-2xl bg-white/5 border border-emerald-400/40 text-emerald-200 font-semibold flex flex-col items-center justify-center gap-1">
+                        <span class="text-lg">🌸🧚🏼‍♀️</span>
+                        <span>La Perfetta • <strong>Flora</strong></span>
+                    </div>
+                    <div class="p-2.5 rounded-2xl bg-white/5 border border-amber-400/40 text-amber-200 font-semibold flex flex-col items-center justify-center gap-1">
+                        <span class="text-lg">☀️🧚‍♀️</span>
+                        <span>La Rompipalle • <strong>Stella</strong></span>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button onclick="startPrelim(event)" class="px-8 py-4 bg-gradient-to-r from-pink-500 via-purple-600 to-pink-600 hover:from-pink-400 hover:to-purple-500 text-white font-extrabold text-lg sm:text-xl rounded-2xl shadow-xl animate-pulse-glow transform hover:-translate-y-1 active:scale-95 transition-all duration-200 border-2 border-yellow-300 flex items-center justify-center gap-3 mx-auto">
+                        <span>Inizia l'Anamnesi Magica ✨</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. PRELIMINARY QUESTIONS SCREEN (PARTE 1: 1-4) -->
+            <div id="screen-prelim" class="hidden space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/15 pb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-xl bg-pink-500/30 border border-pink-300/50 flex items-center justify-center text-yellow-300">
+                            <i class="fa-solid fa-clipboard-user"></i>
+                        </span>
+                        <div>
+                            <span class="text-xs uppercase tracking-widest text-pink-300 font-bold block">Parte 1 • Anamnesi Preliminare</span>
+                            <span class="text-xs text-gray-300">Le 4 domande conoscitive della Clinica</span>
+                        </div>
+                    </div>
+                    <span id="prelim-counter" class="text-xs sm:text-sm font-extrabold text-yellow-300 bg-purple-950/80 px-3.5 py-1.5 rounded-full border border-yellow-400/40 shadow">
+                        Domanda 1 / 4
+                    </span>
+                </div>
+
+                <!-- Fairy Progress Bar -->
+                <div class="relative w-full bg-white/10 h-3 rounded-full overflow- visible">
+                    <div id="prelim-progress-bar" class="bg-gradient-to-r from-pink-500 via-purple-400 to-yellow-300 h-full rounded-full transition-all duration-500 relative" style="width: 25%">
+                        <span class="absolute -right-3 -top-2.5 text-lg select-none drop-shadow">🧚‍♀️</span>
+                    </div>
+                </div>
+                
+                <div id="prelim-container" class="space-y-5 pt-2">
+                    <!-- Dynamically injected preliminary question -->
+                </div>
+
+                <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                    <button id="prelim-prev-btn" onclick="prevPrelim()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-pink-100 text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Precedente
+                    </button>
+                    <span class="text-xs text-pink-200/70 italic">Tocca una risposta per scatenare la magia ✨</span>
+                </div>
+            </div>
+
+            <!-- 3. TRANSITION BANNER: DOTTORESSA DAI FACILI ISTERISMI -->
+            <div id="screen-doctor-banner" class="hidden text-center py-6 sm:py-10 space-y-6">
+                <!-- Custom Blonde Fairy Doctor SVG Illustration -->
+                <div class="relative w-44 h-44 sm:w-52 sm:h-52 mx-auto animate-float">
+                    <!-- Sparkling Aura -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-yellow-300 via-pink-500 to-purple-600 rounded-full blur-xl opacity-60 animate-pulse"></div>
+                    
+                    <div class="relative w-full h-full rounded-full bg-gradient-to-b from-purple-900 via-pink-900 to-indigo-950 border-4 border-yellow-300 shadow-[0_0_40px_rgba(255,215,0,0.6)] flex items-center justify-center overflow-hidden">
+                        <svg viewBox="0 0 200 200" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Sparkling Holographic Winx Wings Behind Doctor -->
+                            <g class="animate-wing-flap" style="transform-origin: 100px 110px;">
+                                <path d="M100 105 C55 45, 5 55, 18 98 C26 125, 65 125, 100 115 Z" fill="url(#docWing)" opacity="0.8" stroke="#ffd700" stroke-width="2"/>
+                                <path d="M100 105 C145 45, 195 55, 182 98 C174 125, 135 125, 100 115 Z" fill="url(#docWing)" opacity="0.8" stroke="#ffd700" stroke-width="2"/>
+                                <path d="M100 115 C65 130, 30 155, 48 172 C62 185, 85 155, 100 128 Z" fill="url(#docWing)" opacity="0.6" stroke="#ff85c0" stroke-width="1.5"/>
+                                <path d="M100 115 C135 130, 170 155, 152 172 C138 185, 115 155, 100 128 Z" fill="url(#docWing)" opacity="0.6" stroke="#ff85c0" stroke-width="1.5"/>
+                            </g>
+                            <!-- Blonde Hair Back -->
+                            <path d="M55 85 C45 130, 48 165, 65 180 L135 180 C152 165, 155 130, 145 85 C140 50, 60 50, 55 85 Z" fill="#ffd147" stroke="#e6a800" stroke-width="2"/>
+                            <!-- Doctor White Lab Coat with Pink Sparkle Lapels -->
+                            <path d="M52 195 C56 150, 74 140, 100 140 C126 140, 144 150, 148 195 Z" fill="#ffffff" stroke="#f3e8ff" stroke-width="2"/>
+                            <path d="M84 140 L100 175 L116 140 Z" fill="#ff2a8d"/>
+                            <path d="M75 142 L95 178 L82 182 L68 152 Z" fill="#fce7f3" stroke="#f9a8d4" stroke-width="1"/>
+                            <path d="M125 142 L105 178 L118 182 L132 152 Z" fill="#fce7f3" stroke="#f9a8d4" stroke-width="1"/>
+                            <!-- Neck & Face -->
+                            <rect x="91" y="122" width="18" height="22" rx="8" fill="#ffe0bd"/>
+                            <ellipse cx="100" cy="95" rx="33" ry="36" fill="#ffe4c4" stroke="#f5cba7" stroke-width="1.5"/>
+                            <!-- Sassy Blonde Bangs / Hair Crown -->
+                            <path d="M64 88 C68 55, 132 55, 136 88 C122 72, 108 68, 95 78 C82 68, 72 75, 64 88 Z" fill="#ffdf6b" stroke="#e6a800" stroke-width="1.5"/>
+                            <!-- Tiara / Medical Mirror Headband -->
+                            <path d="M78 62 L90 46 L100 56 L110 46 L122 62 Z" fill="#ffd700" stroke="#fff" stroke-width="1.2"/>
+                            <circle cx="100" cy="55" r="4" fill="#ff2a8d"/>
+                            <!-- Glamorous Cat-Eye Glasses -->
+                            <g stroke="#ff2a8d" stroke-width="3" fill="rgba(255,255,255,0.28)">
+                                <path d="M68 90 Q82 82 95 92 Q92 103 78 102 Q69 100 68 90 Z"/>
+                                <path d="M132 90 Q118 82 105 92 Q108 103 122 102 Q131 100 132 90 Z"/>
+                                <line x1="95" y1="92" x2="105" y2="92" stroke="#ffd700" stroke-width="2.5"/>
+                            </g>
+                            <!-- Eyes & Raised Eyebrow -->
+                            <circle cx="83" cy="94" r="3.2" fill="#3b0764"/>
+                            <circle cx="117" cy="94" r="3.2" fill="#3b0764"/>
+                            <circle cx="84" cy="93" r="1.2" fill="#fff"/>
+                            <circle cx="118" cy="93" r="1.2" fill="#fff"/>
+                            <path d="M73 81 Q83 76 92 81" stroke="#b45309" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                            <path d="M108 82 Q118 79 127 83" stroke="#b45309" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                            <!-- Glossy Sassy Smile -->
+                            <path d="M90 112 Q100 120 110 112" stroke="#d90479" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                            <!-- Stethoscope around neck -->
+                            <path d="M78 138 C72 162, 85 182, 100 182 C115 182, 128 162, 122 138" stroke="#ffd700" stroke-width="3.5" fill="none"/>
+                            <circle cx="100" cy="182" r="7" fill="#ff2a8d" stroke="#ffd700" stroke-width="2.5"/>
+                            <defs>
+                                <linearGradient id="docWing" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#ff9ebb"/>
+                                    <stop offset="50%" stop-color="#f3e8ff"/>
+                                    <stop offset="100%" stop-color="#ffd700"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <!-- Floating Badge -->
+                    <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-amber-500 text-purple-950 font-black text-xs px-4 py-1 rounded-full shadow-lg border-2 border-white whitespace-nowrap">
+                        DOTT.SSA BIONDA • PRIMARIO DI ALFEA
+                    </div>
+                </div>
+                
+                <div class="space-y-4 max-w-2xl mx-auto px-2 pt-2">
+                    <h2 class="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-pink-300 to-yellow-300 font-display tracking-wide leading-snug fairy-glow">
+                        BENVENUTA, DOTTORESSA DAI FACILI ISTERISMI!
+                    </h2>
+
+                    <div class="text-pink-100 text-sm sm:text-base leading-relaxed bg-purple-950/60 p-5 sm:p-6 rounded-2xl border border-yellow-300/30 shadow-inner space-y-3 text-left sm:text-center">
+                        <p class="font-semibold text-yellow-200">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> AVVISO CLINICO IMPORTANTE:
+                        </p>
+                        <p>
+                            L'anamnesi preliminare è conclusa! Stai per entrare nel vivo delle <strong>15 situazioni ipotetiche ad alto rischio di isterismo</strong>. 
+                        </p>
+                        <p class="text-xs sm:text-sm text-pink-200/90 italic">
+                            Rispondi d'istinto a ogni scenario: alla fine la Dottoressa farà apparire la tua vera <strong>Winx</strong> e ti rivelerà ufficialmente quale archetipo di fidanzata sei!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pt-3">
+                    <button onclick="startMainQuiz(event)" class="px-8 py-4 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 hover:from-yellow-300 hover:to-pink-500 text-white font-extrabold text-lg sm:text-xl rounded-2xl shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-200 border-2 border-yellow-200 flex items-center justify-center gap-3 mx-auto">
+                        <span>Entra nel Vivo del Disagio 🩺✨</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. MAIN QUIZ SCREEN (PARTE 2: 15 HYPOTHETICAL QUESTIONS) -->
+            <div id="screen-main-quiz" class="hidden space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/15 pb-4">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-500 to-purple-600 border border-yellow-300 flex items-center justify-center text-yellow-200 shadow">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </span>
+                        <div>
+                            <span class="text-xs uppercase tracking-widest text-yellow-300 font-bold block">Parte 2 • Scenari Clinici Ipotetici</span>
+                            <span class="text-xs text-pink-200">Scegli la tua reazione istintiva</span>
+                        </div>
+                    </div>
+                    <span id="main-counter" class="text-xs sm:text-sm font-extrabold text-yellow-300 bg-purple-950/80 px-3.5 py-1.5 rounded-full border border-yellow-400/40 shadow">
+                        Scenario 1 / 15
+                    </span>
+                </div>
+
+                <!-- Fairy Progress Bar -->
+                <div class="relative w-full bg-white/10 h-3 rounded-full">
+                    <div id="quiz-progress-bar" class="bg-gradient-to-r from-pink-500 via-amber-400 to-yellow-300 h-full rounded-full transition-all duration-500 relative" style="width: 7%">
+                        <span class="absolute -right-3 -top-2.5 text-lg select-none drop-shadow">🪄</span>
+                    </div>
+                </div>
+
+                <div id="main-question-container" class="space-y-5 pt-2">
+                    <!-- Dynamically injected main question -->
+                </div>
+
+                <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                    <button id="main-prev-btn" onclick="prevMain()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-pink-100 text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Scenario Precedente
+                    </button>
+                    <span class="text-xs text-pink-200/70 italic">La Dottoressa prende appunti... 📝</span>
+                </div>
+            </div>
+
+            <!-- 5. FINAL RESULT SCREEN -->
+            <div id="screen-result" class="hidden space-y-8 py-2">
+                <div class="text-center space-y-2">
+                    <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 text-xs font-bold uppercase tracking-widest">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Diagnosi Ufficiale della Clinica di Alfea
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-yellow-200 to-pink-400 font-display fairy-glow">
+                        Il Verdetto della Dottoressa
+                    </h2>
+                </div>
+
+                <div id="result-card-content" class="space-y-6">
+                    <!-- Dynamically injected result details -->
+                </div>
+
+                <!-- Answer Review Accordion -->
+                <div class="pt-2">
+                    <button onclick="toggleReviewAnswers()" class="w-full py-3 px-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-pink-200 text-sm font-bold flex items-center justify-between transition">
+                        <span><i class="fa-solid fa-list-check mr-2 text-yellow-300"></i> Rivedi tutte le tue risposte (Cartella Clinica Completa)</span>
+                        <i id="review-chevron" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div id="review-container" class="hidden mt-3 space-y-2.5 max-h-80 overflow-y-auto p-4 rounded-2xl bg-black/30 border border-white/10 text-xs sm:text-sm">
+                        <!-- Dynamically populated answer log -->
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-4 pt-2">
+                    <button onclick="restartQuiz(event)" class="px-7 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-base rounded-2xl transition border border-white/25 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Rifai la Radiografia
+                    </button>
+                    <button onclick="shareResult(event)" class="px-8 py-4 bg-gradient-to-r from-pink-500 via-purple-600 to-amber-500 hover:opacity-95 text-white font-extrabold text-base rounded-2xl shadow-xl border-2 border-yellow-300 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-share-nodes"></i> Copia e Condividi Diagnosi ✨
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="mt-6 text-center text-xs text-pink-200/60 font-medium">
+            Radiografia di Coppia • Clinica Psico-Fatata di Alfea ✨ Tutti i lemuri, opossum e cocoriti Rio sono stati tutelati.
+        </footer>
+    </div>
+
+    <!-- APPLICATION SCRIPT -->
+    <script>
+        // ==========================================
+        // 1. WEB AUDIO SYNTHESIZER (FAIRY CHIMES)
+        // ==========================================
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) audioCtx = new AudioContext();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            const label = document.getElementById('sound-label');
+            if (soundEnabled) {
+                icon.className = 'fa-solid fa-volume-high text-yellow-300';
+                label.innerText = 'Effetti Magici: ON';
+                playFairySound('sparkle');
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-gray-400';
+                label.innerText = 'Effetti Magici: OFF';
+            }
+        }
+
+        function playFairySound(type = 'sparkle') {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+
+                const now = audioCtx.currentTime;
+                if (type === 'sparkle') {
+                    const notes = [587.33, 783.99, 987.77, 1174.66, 1567.98];
+                    notes.forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.045);
+                        gain.gain.setValueAtTime(0.08, now + idx * 0.045);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.045 + 0.25);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + idx * 0.045);
+                        osc.stop(now + idx * 0.045 + 0.26);
+                    });
+                } else if (type === 'fanfare') {
+                    const chord = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+                    chord.forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+                        gain.gain.setValueAtTime(0.12, now + idx * 0.07);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.55);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + idx * 0.07);
+                        osc.stop(now + idx * 0.07 + 0.56);
+                    });
+                }
+            } catch (e) {
+                // Ignore audio errors on restricted devices
+            }
+        }
+
+        // ==========================================
+        // 2. SPARKLE PARTICLES & CLICK SURPRISES
+        // ==========================================
+        function createBackgroundStars() {
+            const bg = document.getElementById('sparkleBg');
+            const count = 42;
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 4 + 2;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+                star.style.setProperty('--opacity', Math.random() * 0.7 + 0.2);
+                bg.appendChild(star);
+            }
+        }
+        createBackgroundStars();
+
+        const CLICK_SURPRISES = {
+            pazza: [
+                { icon: "🔥", text: "Fiamma del Drago Termonucleare attivata!" },
+                { icon: "✈️", text: "Biglietto sola andata per Nairobi prenotato!" },
+                { icon: "🚨", text: "Allerta Digos registrata in cartella!" },
+                { icon: "💥", text: "La Dottoressa indietreggia spaventata!" }
+            ],
+            rompipalle: [
+                { icon: "☀️", text: "890 frecciatine al minuto schedulate!" },
+                { icon: "💅", text: "Muso lungo certificato con lode ad Alfea!" },
+                { icon: "🕵️‍♀️", text: "La Detective Conan approva questo metodo!" },
+                { icon: "📋", text: "Rinfaccio cronometrico annotato!" }
+            ],
+            equilibrata: [
+                { icon: "🌿", text: "Polvere di Camomilla di Flora attivata!" },
+                { icon: "🧘‍♀️", text: "Zen olimpico rilevato nei chakra!" },
+                { icon: "✨", text: "Equilibrio fatato registrato!" },
+                { icon: "🕊️", text: "La Dottoressa applaude la tua diplomazia!" }
+            ],
+            perfetta: [
+                { icon: "🌸", text: "Santa Subito nella Contea del Saxon!" },
+                { icon: "💖", text: "Dolcezza di Flora oltre le leggi della fisica!" },
+                { icon: "🧚‍♀️", text: "Ali Enchantix guadagnate sul campo!" },
+                { icon: "🍪", text: "Latte, biscotti e grazia regale!" }
+            ],
+            prelim: [
+                { icon: "✨", text: "Dato anagrafico-fatato registrato!" },
+                { icon: "🩺", text: "La Dottoressa annuisce e prende nota!" },
+                { icon: "💖", text: "Polvere di Fata acquisita!" }
+            ]
+        };
+
+        let toastTimeout = null;
+        function triggerClickSurprise(event, category = 'prelim') {
+            playFairySound('sparkle');
+
+            // 1. Spawn cursor particles
+            const x = event?.clientX || window.innerWidth / 2;
+            const y = event?.clientY || window.innerHeight / 2;
+            const emojis = ['✨', '💖', '🧚‍♀️', '⭐', '💎', '🦋', '🌸'];
+
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement('span');
+                p.className = 'magic-particle';
+                p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                p.style.left = `${x}px`;
+                p.style.top = `${y}px`;
+                const angle = (Math.PI * 2 * i) / 12 + (Math.random() * 0.5 - 0.25);
+                const dist = 55 + Math.random() * 85;
+                p.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+                p.style.setProperty('--ty', `${Math.sin(angle) * dist - 25}px`);
+                p.style.setProperty('--rot', `${(Math.random() - 0.5) * 260}deg`);
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 950);
+            }
+
+            // 2. Show witty reaction toast
+            const pool = CLICK_SURPRISES[category] || CLICK_SURPRISES.prelim;
+            const item = pool[Math.floor(Math.random() * pool.length)];
+            const toast = document.getElementById('reaction-toast');
+            document.getElementById('reaction-toast-icon').innerText = item.icon;
+            document.getElementById('reaction-toast-text').innerText = item.text;
+
+            toast.classList.remove('opacity-0', '-translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', '-translate-y-4');
+            }, 1700);
+        }
+
+        // ==========================================
+        // 3. EXACT QUESTIONS & WINX FAIRY ARCHETYPES
+        // ==========================================
+        function getWinxIllustrationSVG(key) {
+            if (key === 'pazza') {
+                // BLOOM: Fiery red long hair, cyan/blue glittery Enchantix top, golden crown, blazing dragon fire wings & flame aura
+                return `
+                <svg viewBox="0 0 240 260" class="w-full h-full drop-shadow-[0_0_25px_rgba(255,69,0,0.85)]" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="bloomWings" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#38bdf8"/>
+                            <stop offset="50%" stop-color="#fb7185"/>
+                            <stop offset="100%" stop-color="#facc15"/>
+                        </linearGradient>
+                        <linearGradient id="bloomHair" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#ff4500"/>
+                            <stop offset="100%" stop-color="#b91c1c"/>
+                        </linearGradient>
+                        <linearGradient id="bloomDress" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#06b6d4"/>
+                            <stop offset="100%" stop-color="#2563eb"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Dragon Flame Aura -->
+                    <circle cx="120" cy="130" r="95" fill="rgba(255,69,0,0.18)" class="animate-pulse"/>
+                    <!-- Enchantix Wings -->
+                    <g class="animate-wing-flap" style="transform-origin: 120px 135px;">
+                        <path d="M120 130 C55 40, 5 55, 22 115 C32 145, 80 148, 120 138 Z" fill="url(#bloomWings)" opacity="0.88" stroke="#fef08a" stroke-width="2.5"/>
+                        <path d="M120 130 C185 40, 235 55, 218 115 C208 145, 160 148, 120 138 Z" fill="url(#bloomWings)" opacity="0.88" stroke="#fef08a" stroke-width="2.5"/>
+                        <path d="M120 140 C75 160, 35 195, 58 215 C75 230, 102 190, 120 155 Z" fill="url(#bloomWings)" opacity="0.75" stroke="#38bdf8" stroke-width="2"/>
+                        <path d="M120 140 C165 160, 205 195, 182 215 C165 230, 138 190, 120 155 Z" fill="url(#bloomWings)" opacity="0.75" stroke="#38bdf8" stroke-width="2"/>
+                    </g>
+                    <!-- Flowing Red Hair Back -->
+                    <path d="M68 90 C50 145, 48 215, 72 240 L168 240 C192 215, 190 145, 172 90 C160 45, 80 45, 68 90 Z" fill="url(#bloomHair)" stroke="#7f1d1d" stroke-width="2"/>
+                    <!-- Cyan Magical Outfit -->
+                    <path d="M76 245 C82 185, 96 172, 120 172 C144 172, 158 185, 164 245 Z" fill="url(#bloomDress)" stroke="#bae6fd" stroke-width="2"/>
+                    <!-- Yellow Heart Brooch -->
+                    <path d="M120 180 C114 173, 105 176, 105 183 C105 191, 120 198, 120 203 C120 198, 135 191, 135 183 C135 176, 126 173, 120 180 Z" fill="#facc15" stroke="#fff" stroke-width="1.5"/>
+                    <!-- Neck & Head -->
+                    <rect x="110" y="146" width="20" height="28" rx="9" fill="#ffe0bd"/>
+                    <ellipse cx="120" cy="115" rx="36" ry="40" fill="#ffe4c4" stroke="#f5cba7" stroke-width="1.5"/>
+                    <!-- Cyan Eyes with Fiery Determination -->
+                    <ellipse cx="104" cy="116" rx="5.5" ry="6.5" fill="#0284c7"/>
+                    <ellipse cx="136" cy="116" rx="5.5" ry="6.5" fill="#0284c7"/>
+                    <circle cx="102" cy="114" r="2" fill="#fff"/>
+                    <circle cx="134" cy="114" r="2" fill="#fff"/>
+                    <!-- Fierce Eyebrows -->
+                    <path d="M93 103 L112 108" stroke="#991b1b" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M147 103 L128 108" stroke="#991b1b" stroke-width="3" stroke-linecap="round"/>
+                    <!-- Sassy Confident Smile -->
+                    <path d="M108 136 Q120 146 132 136" stroke="#e11d48" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                    <!-- Red Hair Front Bangs -->
+                    <path d="M82 108 C86 68, 154 68, 158 108 C144 85, 128 82, 120 96 C112 82, 96 85, 82 108 Z" fill="#ff5722" stroke="#b91c1c" stroke-width="1.5"/>
+                    <!-- Domino Golden Crown -->
+                    <path d="M95 75 L106 54 L120 67 L134 54 L145 75 Z" fill="#facc15" stroke="#fef08a" stroke-width="2"/>
+                    <circle cx="120" cy="65" r="4.5" fill="#06b6d4"/>
+                    <!-- Floating Dragon Fireballs in Hands -->
+                    <circle cx="48" cy="175" r="18" fill="#ff4500" opacity="0.85"/>
+                    <circle cx="48" cy="175" r="10" fill="#facc15"/>
+                    <circle cx="192" cy="175" r="18" fill="#ff4500" opacity="0.85"/>
+                    <circle cx="192" cy="175" r="10" fill="#facc15"/>
+                </svg>`;
+            } else if (key === 'rompipalle') {
+                // STELLA: Golden blonde long hair, Solaria sun-orange & hot-pink outfit, star crown, solar wings
+                return `
+                <svg viewBox="0 0 240 260" class="w-full h-full drop-shadow-[0_0_25px_rgba(250,204,21,0.85)]" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="stellaWings" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#fef08a"/>
+                            <stop offset="50%" stop-color="#f97316"/>
+                            <stop offset="100%" stop-color="#ec4899"/>
+                        </linearGradient>
+                        <linearGradient id="stellaHair" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#fef08a"/>
+                            <stop offset="100%" stop-color="#eab308"/>
+                        </linearGradient>
+                        <linearGradient id="stellaDress" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#f97316"/>
+                            <stop offset="100%" stop-color="#db2777"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="120" cy="130" r="95" fill="rgba(250,204,21,0.18)" class="animate-pulse"/>
+                    <!-- Solar Wings -->
+                    <g class="animate-wing-flap" style="transform-origin: 120px 135px;">
+                        <path d="M120 130 C52 38, 8 58, 25 118 C36 146, 82 148, 120 138 Z" fill="url(#stellaWings)" opacity="0.9" stroke="#fff" stroke-width="2.5"/>
+                        <path d="M120 130 C188 38, 232 58, 215 118 C204 146, 158 148, 120 138 Z" fill="url(#stellaWings)" opacity="0.9" stroke="#fff" stroke-width="2.5"/>
+                        <path d="M120 140 C75 162, 35 198, 60 218 C78 230, 104 190, 120 155 Z" fill="url(#stellaWings)" opacity="0.75" stroke="#fef08a" stroke-width="2"/>
+                        <path d="M120 140 C165 162, 205 198, 180 218 C162 230, 136 190, 120 155 Z" fill="url(#stellaWings)" opacity="0.75" stroke="#fef08a" stroke-width="2"/>
+                    </g>
+                    <!-- Golden Blonde Hair Back -->
+                    <path d="M66 88 C50 148, 48 218, 70 242 L170 242 C192 218, 190 148, 174 88 C162 45, 78 45, 66 88 Z" fill="url(#stellaHair)" stroke="#ca8a04" stroke-width="2"/>
+                    <!-- Solaria Dress -->
+                    <path d="M76 245 C82 185, 96 172, 120 172 C144 172, 158 185, 164 245 Z" fill="url(#stellaDress)" stroke="#fde047" stroke-width="2"/>
+                    <!-- Star Brooch -->
+                    <polygon points="120,175 124,185 135,185 126,191 129,202 120,195 111,202 114,191 105,185 116,185" fill="#fef08a" stroke="#fff" stroke-width="1"/>
+                    <!-- Neck & Head -->
+                    <rect x="110" y="146" width="20" height="28" rx="9" fill="#ffe0bd"/>
+                    <ellipse cx="120" cy="115" rx="36" ry="40" fill="#ffe4c4" stroke="#f5cba7" stroke-width="1.5"/>
+                    <!-- Amber/Golden Eyes -->
+                    <ellipse cx="104" cy="116" rx="5.5" ry="6.5" fill="#b45309"/>
+                    <ellipse cx="136" cy="116" rx="5.5" ry="6.5" fill="#b45309"/>
+                    <circle cx="102" cy="114" r="2" fill="#fff"/>
+                    <circle cx="134" cy="114" r="2" fill="#fff"/>
+                    <!-- Sassy Raised Eyebrow -->
+                    <path d="M93 101 Q104 95 113 102" stroke="#a16207" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <path d="M127 104 Q137 101 147 105" stroke="#a16207" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <!-- Glossy Pink Smirk -->
+                    <path d="M107 136 Q120 145 134 134" stroke="#db2777" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                    <!-- Blonde Bangs -->
+                    <path d="M82 108 C86 66, 154 66, 158 108 C142 82, 126 80, 120 94 C110 80, 96 82, 82 108 Z" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+                    <!-- Star Tiara -->
+                    <polygon points="120,46 126,60 141,60 129,68 133,82 120,73 107,82 111,68 99,60 114,60" fill="#facc15" stroke="#fff" stroke-width="1.8"/>
+                    <circle cx="120" cy="65" r="4" fill="#ec4899"/>
+                </svg>`;
+            } else if (key === 'perfetta') {
+                // FLORA: Honey-caramel hair with pink flower crown, rose-petal & emerald dress, leaf-petal fairy wings
+                return `
+                <svg viewBox="0 0 240 260" class="w-full h-full drop-shadow-[0_0_25px_rgba(52,211,153,0.85)]" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="floraWings" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#86efac"/>
+                            <stop offset="50%" stop-color="#f472b6"/>
+                            <stop offset="100%" stop-color="#fef08a"/>
+                        </linearGradient>
+                        <linearGradient id="floraHair" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#b45309"/>
+                            <stop offset="100%" stop-color="#78350f"/>
+                        </linearGradient>
+                        <linearGradient id="floraDress" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#ec4899"/>
+                            <stop offset="100%" stop-color="#10b981"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="120" cy="130" r="95" fill="rgba(244,114,182,0.18)" class="animate-pulse"/>
+                    <!-- Botanical Fairy Wings -->
+                    <g class="animate-wing-flap" style="transform-origin: 120px 135px;">
+                        <path d="M120 130 C52 38, 10 62, 26 118 C36 146, 82 148, 120 138 Z" fill="url(#floraWings)" opacity="0.88" stroke="#bbf7d0" stroke-width="2.5"/>
+                        <path d="M120 130 C188 38, 230 62, 214 118 C204 146, 158 148, 120 138 Z" fill="url(#floraWings)" opacity="0.88" stroke="#bbf7d0" stroke-width="2.5"/>
+                        <path d="M120 140 C75 162, 35 198, 60 218 C78 230, 104 190, 120 155 Z" fill="url(#floraWings)" opacity="0.75" stroke="#f9a8d4" stroke-width="2"/>
+                        <path d="M120 140 C165 162, 205 198, 180 218 C162 230, 136 190, 120 155 Z" fill="url(#floraWings)" opacity="0.75" stroke="#f9a8d4" stroke-width="2"/>
+                    </g>
+                    <!-- Honey Brown Hair Back -->
+                    <path d="M66 88 C50 148, 48 218, 70 242 L170 242 C192 218, 190 148, 174 88 C162 45, 78 45, 66 88 Z" fill="url(#floraHair)" stroke="#451a03" stroke-width="2"/>
+                    <!-- Rose & Emerald Outfit -->
+                    <path d="M76 245 C82 185, 96 172, 120 172 C144 172, 158 185, 164 245 Z" fill="url(#floraDress)" stroke="#fbcfe8" stroke-width="2"/>
+                    <!-- Flower Brooch -->
+                    <circle cx="120" cy="188" r="9" fill="#f472b6" stroke="#fef08a" stroke-width="2"/>
+                    <circle cx="120" cy="188" r="4" fill="#fef08a"/>
+                    <!-- Neck & Head -->
+                    <rect x="110" y="146" width="20" height="28" rx="9" fill="#f5cba7"/>
+                    <ellipse cx="120" cy="115" rx="36" ry="40" fill="#f5cba7" stroke="#e59866" stroke-width="1.5"/>
+                    <!-- Emerald Green Sweet Eyes -->
+                    <ellipse cx="104" cy="116" rx="5.5" ry="6.5" fill="#10b981"/>
+                    <ellipse cx="136" cy="116" rx="5.5" ry="6.5" fill="#10b981"/>
+                    <circle cx="102" cy="114" r="2" fill="#fff"/>
+                    <circle cx="134" cy="114" r="2" fill="#fff"/>
+                    <!-- Gentle Eyebrows -->
+                    <path d="M94 102 Q104 97 112 102" stroke="#78350f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <path d="M128 102 Q136 97 146 102" stroke="#78350f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <!-- Sweet Angelic Smile -->
+                    <path d="M108 135 Q120 145 132 135" stroke="#db2777" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                    <!-- Honey Bangs with Blonde Framing -->
+                    <path d="M82 108 C86 66, 154 66, 158 108 C142 82, 126 80, 120 94 C110 80, 96 82, 82 108 Z" fill="#d97706" stroke="#78350f" stroke-width="1.5"/>
+                    <!-- Angelic Halo + Flower Crown -->
+                    <ellipse cx="120" cy="48" rx="34" ry="8" fill="none" stroke="#fef08a" stroke-width="3.5"/>
+                    <circle cx="102" cy="70" r="7" fill="#f472b6" stroke="#fff" stroke-width="1.5"/>
+                    <circle cx="120" cy="66" r="8" fill="#ec4899" stroke="#fef08a" stroke-width="1.5"/>
+                    <circle cx="138" cy="70" r="7" fill="#f472b6" stroke="#fff" stroke-width="1.5"/>
+                </svg>`;
+            } else {
+                // AISHA (L'Equilibrata): Wavy dark auburn/brown hair, aquamarine & violet Morphix outfit, water-wave wings
+                return `
+                <svg viewBox="0 0 240 260" class="w-full h-full drop-shadow-[0_0_25px_rgba(34,211,238,0.85)]" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="aishaWings" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#22d3ee"/>
+                            <stop offset="50%" stop-color="#a855f7"/>
+                            <stop offset="100%" stop-color="#ec4899"/>
+                        </linearGradient>
+                        <linearGradient id="aishaHair" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#451a03"/>
+                            <stop offset="100%" stop-color="#1c1917"/>
+                        </linearGradient>
+                        <linearGradient id="aishaDress" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#06b6d4"/>
+                            <stop offset="100%" stop-color="#10b981"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="120" cy="130" r="95" fill="rgba(34,211,238,0.18)" class="animate-pulse"/>
+                    <!-- Hydro Morphix Wings -->
+                    <g class="animate-wing-flap" style="transform-origin: 120px 135px;">
+                        <path d="M120 130 C52 38, 10 62, 26 118 C36 146, 82 148, 120 138 Z" fill="url(#aishaWings)" opacity="0.88" stroke="#a5f3fc" stroke-width="2.5"/>
+                        <path d="M120 130 C188 38, 230 62, 214 118 C204 146, 158 148, 120 138 Z" fill="url(#aishaWings)" opacity="0.88" stroke="#a5f3fc" stroke-width="2.5"/>
+                        <path d="M120 140 C75 162, 35 198, 60 218 C78 230, 104 190, 120 155 Z" fill="url(#aishaWings)" opacity="0.75" stroke="#c084fc" stroke-width="2"/>
+                        <path d="M120 140 C165 162, 205 198, 180 218 C162 230, 136 190, 120 155 Z" fill="url(#aishaWings)" opacity="0.75" stroke="#c084fc" stroke-width="2"/>
+                    </g>
+                    <!-- Voluminous Wavy Dark Hair Back -->
+                    <path d="M62 85 C44 148, 44 220, 68 242 L172 242 C196 220, 196 148, 178 85 C164 42, 76 42, 62 85 Z" fill="url(#aishaHair)" stroke="#0c0a09" stroke-width="2"/>
+                    <!-- Aquamarine Enchantix Outfit -->
+                    <path d="M76 245 C82 185, 96 172, 120 172 C144 172, 158 185, 164 245 Z" fill="url(#aishaDress)" stroke="#a5f3fc" stroke-width="2"/>
+                    <!-- Ocean Pearl Gem -->
+                    <circle cx="120" cy="188" r="8" fill="#22d3ee" stroke="#fff" stroke-width="2"/>
+                    <!-- Neck & Head -->
+                    <rect x="110" y="146" width="20" height="28" rx="9" fill="#c68642"/>
+                    <ellipse cx="120" cy="115" rx="36" ry="40" fill="#d2996c" stroke="#a06b3b" stroke-width="1.5"/>
+                    <!-- Bright Turquoise Eyes -->
+                    <ellipse cx="104" cy="116" rx="5.5" ry="6.5" fill="#0284c7"/>
+                    <ellipse cx="136" cy="116" rx="5.5" ry="6.5" fill="#0284c7"/>
+                    <circle cx="102" cy="114" r="2" fill="#fff"/>
+                    <circle cx="134" cy="114" r="2" fill="#fff"/>
+                    <!-- Confident Calm Eyebrows -->
+                    <path d="M94 102 Q104 98 112 103" stroke="#292524" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                    <path d="M128 103 Q136 98 146 102" stroke="#292524" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                    <!-- Balanced Serene Smile -->
+                    <path d="M108 135 Q120 144 132 135" stroke="#ec4899" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                    <!-- Wavy Bangs -->
+                    <path d="M82 108 C86 66, 154 66, 158 108 C142 82, 126 80, 120 94 C110 80, 96 82, 82 108 Z" fill="#451a03" stroke="#1c1917" stroke-width="1.5"/>
+                    <!-- Andros Turquoise Tiara -->
+                    <path d="M96 74 L108 56 L120 68 L132 56 L144 74 Z" fill="#22d3ee" stroke="#fff" stroke-width="1.8"/>
+                    <circle cx="120" cy="65" r="4" fill="#ec4899"/>
+                </svg>`;
+            }
+        }
+
+        const PROFILES = {
+            pazza: {
+                name: "La Pazza",
+                winxShort: "BLOOM",
+                winxTitle: "Bloom • Fata della Fiamma del Drago Psicopatica",
+                power: "Fiamma Termonucleare di Domino, Voli Diretti per Nairobi & Perquisizioni Digos",
+                tagline: "Biglietto sola andata per Nairobi & Sequestro Politico",
+                icon: "🔥",
+                gradient: "from-rose-600 via-red-600 to-purple-800",
+                barColor: "bg-gradient-to-r from-rose-500 to-amber-500",
+                badgeClass: "bg-rose-500/30 text-rose-200 border-rose-400/50",
+                winxQuote: "«Tesoro, sono BLOOM! Ma quale respirare fino a dieci?! Se il tuo piccolo lemure torna da Corso Como con 4 follower in più, guarda l'Inter in semifinale di Coppa delle Zebre o fa gli auguri migliori al cocorito Rio, io e te attiviamo la Fiamma del Drago e lo spediamo a zappare a Nairobi! Altro che prigioniero politico o calcio sugli zigomi: se sgarra, diamo fuoco direttamente a tutta Magix!»",
+                desc: "Il tuo spirito guida è Bloom quando perde completamente le staffe! Per te la diplomazia è un concetto astratto inventato dalle Trix. Se lui non ti porta la rosa da 3 mesi e mezzo, tu piazzi subito la storia in bikini al mare di Grosseto; se non ti compra la borsa firmata, sabato sera sei già al sushi col suo migliore amico!",
+                advice: "Prescrizione della Dottoressa: Tieni a bada la Fiamma del Drago prima di cambiare residenza al partner o mobilitare le amiche come i servizi segreti."
+            },
+            rompipalle: {
+                name: "La Rompipalle",
+                winxShort: "STELLA",
+                winxTitle: "Stella • Principessa di Solaria e delle 890 Frecciatine",
+                power: "Raggio Solare Accecante, Sorrisetto da Assatanata & Memoria Storica da Elefante",
+                tagline: "Interrogatori dalle 10:00 alle 15:00 & Missili su Uranio",
+                icon: "☀️",
+                gradient: "from-amber-500 via-pink-600 to-purple-700",
+                barColor: "bg-gradient-to-r from-amber-400 to-pink-500",
+                badgeClass: "bg-amber-500/30 text-amber-200 border-amber-400/50",
+                winxQuote: "«Ciao splendore, sono STELLA! Parliamoci chiaro: ma come si permette di portarti al sushi di martedì per risparmiare invece di comprarti la borsa firmata dei tuoi sogni?! Fai benissimo a farglielo notare 890 volte di fila, a spegnergli il telefono col sorrisetto da assatanata e a rinfacciargli i 4 follower dalle 10 di mattina alle 15 del pomeriggio della settimana dopo. Noi principesse di Solaria pretendiamo il tappeto rosso!»",
+                desc: "In te scorre il sangue regale e implacabile di Stella! Non ti sfugge neanche una notifica all'una e quaranta di notte. Sei la regina indiscussa del muso lungo fino a sera, delle sfilate vendicative con vestito mozzafiato contro le Kylie Jenner dei poveri e dei missili dritti su Uranio quando salta la cena ai Lucernari di Foggia per un calcetto.",
+                advice: "Prescrizione della Dottoressa: Hai il radar infallibile della Detective Conan, ma concedi a quel povero cristo almeno 10 minuti d'aria tra un interrogatorio e l'altro!"
+            },
+            equilibrata: {
+                name: "L'Equilibrata",
+                winxShort: "AISHA",
+                winxTitle: "Aisha • Fata dei Fluidi, della Logica e del Sangue Freddo",
+                power: "Onde Morphix Rilassanti, Dialogo Maturo & Nervi d'Acciaio Inossidabile",
+                tagline: "Maestra del Dialogo & Pilastro della Sanità Mentale",
+                icon: "🌊",
+                gradient: "from-cyan-500 via-teal-600 to-indigo-800",
+                barColor: "bg-gradient-to-r from-cyan-400 to-emerald-400",
+                badgeClass: "bg-cyan-500/30 text-cyan-200 border-cyan-400/50",
+                winxQuote: "«Ehi amica, sono AISHA! Finalmente una fata con tutte le rotelle al posto giusto in questa clinica di pazze! Noi non abbiamo bisogno di fare sceneggiate per una finta influencer di Chieti o per una partita a FIFA: ci facciamo rispettare con classe, parliamo chiaro la mattina dopo e se troviamo disordine lo invitiamo con fermezza a chiudere quell'arnese e riordinare. Zero paranoie, 100% autostima!»",
+                desc: "Sei l'incarnazione di Aisha: sicura di te, lucida, sportiva e risoluta. Che si tratti della semifinale dell'Inter al ristorante di Milano o di un momento di limbo in cui lui non si apre, tu non urli e non spacchi mobili: intavoli discorsi maturi, ti fidi del vostro amore ma sai farti ascoltare senza mai perdere la dignità.",
+                advice: "Prescrizione della Dottoressa: Il tuo equilibrio psicofisico è merce rarissima ad Alfea, continua così e insegna il tuo segreto alle tue amiche!"
+            },
+            perfetta: {
+                name: "La Perfetta",
+                winxShort: "FLORA",
+                winxTitle: "Flora • Santa Patrona di Linphea e della Pazienza Infinita",
+                power: "Essenza di Camomilla Angelica, Latte e Biscotti & Comprensione Sovrumana",
+                tagline: "Dolcezza Assoluta, Pagamenti Divisi & Grazia della Contea",
+                icon: "🌸",
+                gradient: "from-emerald-500 via-pink-500 to-purple-700",
+                barColor: "bg-gradient-to-r from-emerald-400 to-pink-400",
+                badgeClass: "bg-emerald-500/30 text-emerald-200 border-emerald-400/50",
+                winxQuote: "«Ciao anima dolce, sono FLORA! Io e te siamo fatte della stessa polvere di stelle e petali di rosa: sappiamo benissimo di essere le più belle della contea! Se il Lord del Saxon chiede di dividere paghiamo noi col sorriso, andiamo a vederlo a calcetto a Foggia, lo coccoliamo quando è giù e se gioca alla Play gli diamo un bacio prima di dirgli di riordinare. Ad Alfea ci faranno un monumento!»",
+                desc: "Sei Flora in tutto il suo splendore angelico! Non senti le notifiche all'1:40 perché dormi serena, sei felice anche per 10 rose e un sushi di martedì, e persino davanti a Kylie Jenner vestita Gucci risolvi tutto amabilmente davanti a latte e biscotti. La tua dolcezza disarma qualsiasi conflitto.",
+                advice: "Prescrizione della Dottoressa: Sei un sogno a occhi aperti, ma ricorda che anche la fata più dolce di Linphea ogni tanto ha il sacrosanto diritto di pretendere la sua borsa firmata!"
+            }
+        };
+
+        // PARTE 1: Le 4 Domande Preliminari (EXACT TEXT - Option E strictly "Non l'ho incontrato ancora il mio soldato Ryan")
+        const prelimQuestions = [
+            {
+                id: 1,
+                question: "1. Da quanto stai con il tuo piccolo lemure?",
+                options: [
+                    { letter: "A", text: "0-1 anno" },
+                    { letter: "B", text: "1-3 anni" },
+                    { letter: "C", text: "3-5 anni" },
+                    { letter: "D", text: "+5 anni" },
+                    { letter: "E", text: "Non l'ho incontrato ancora il mio soldato Ryan" }
+                ]
+            },
+            {
+                id: 2,
+                question: "2. Dove hai incontrato il tuo amato opossum?",
+                options: [
+                    { letter: "A", text: "Ad una festa / altro contesto sociale" },
+                    { letter: "B", text: "Sui social" },
+                    { letter: "C", text: "Sulle app di dating" },
+                    { letter: "D", text: "A scuola / lavoro / università" },
+                    { letter: "E", text: "Non l'ho incontrato ancora il mio soldato Ryan" }
+                ]
+            },
+            {
+                id: 3,
+                question: "3. Chi si è esposto prima sentimentalmente in questo dramma napoletano di relazione?",
+                options: [
+                    { letter: "A", text: "Io" },
+                    { letter: "B", text: "Lui" },
+                    { letter: "C", text: "Insieme" },
+                    { letter: "D", text: "Io, ma non voglio ammetterlo" },
+                    { letter: "E", text: "Non l'ho incontrato ancora il mio soldato Ryan" }
+                ]
+            },
+            {
+                id: 4,
+                question: "4. Perché ti sembra oggi ancora il più adatto a sopportare le tue paturnie eptadimensionali?",
+                options: [
+                    { letter: "A", text: "Non ce ne sono altri" },
+                    { letter: "B", text: "Sento che mi ama da morire" },
+                    { letter: "C", text: "Perché fisicamente non mi ascolta" },
+                    { letter: "D", text: "Perché ha qualcosa in più" },
+                    { letter: "E", text: "Non l'ho incontrato ancora il mio soldato Ryan" }
+                ]
+            }
+        ];
+
+        // PARTE 2: Le 15 Domande Ipotetiche (EXACT TEXT & MAPPINGS)
+        const mainQuestions = [
+            {
+                id: 1,
+                code: "D1",
+                text: "Ai primi messaggi il relatore di questo amore incredibile ti rispondeva come quello universitario, dopo 2 ore, tu cosa pensavi?",
+                options: [
+                    { letter: "A", text: "Lo butto giù dal balcone", profile: "pazza" },
+                    { letter: "B", text: "Avrà da fare", profile: "equilibrata" },
+                    { letter: "C", text: "Ora lo tartasso", profile: "rompipalle" },
+                    { letter: "D", text: "Stimolavi la chat con altro", profile: "perfetta" }
+                ]
+            },
+            {
+                id: 2,
+                code: "D2",
+                text: "Al primo appuntamento non viene a prenderti in macchina e ti dice di incontrarsi direttamente nel luogo dell'appuntamento, tu:",
+                options: [
+                    { letter: "A", text: "Per questa volta va bene", profile: "equilibrata" },
+                    { letter: "B", text: "Avrà avuto i suoi motivi", profile: "perfetta" },
+                    { letter: "C", text: "Lo ghosti", profile: "pazza" },
+                    { letter: "D", text: "Ci rimugini tutta la sera", profile: "rompipalle" }
+                ]
+            },
+            {
+                id: 3,
+                code: "D3",
+                text: "Al primo appuntamento il Lord della contea del Saxon non paga e chiede di dividere, tu:",
+                options: [
+                    { letter: "A", text: "Paghi per entrambi", profile: "perfetta" },
+                    { letter: "B", text: "Lo fai volare a Nairobi", profile: "pazza" },
+                    { letter: "C", text: "Gli dai un'altra chance", profile: "equilibrata" },
+                    { letter: "D", text: "Glielo fai notare più avanti", profile: "rompipalle" }
+                ]
+            },
+            {
+                id: 4,
+                code: "D4",
+                text: "Mentre esce con te, ti rivela che si sta scrivendo in maniera amichevole, poco intensa e assolutamente non interessata con un'altra bella ragazza ma ti assicura che ci sei solo tu alle porte del suo cuore, tu:",
+                options: [
+                    { letter: "A", text: "Lo ribalti", profile: "pazza" },
+                    { letter: "B", text: "Chiedi immediatamente spiegazioni e lo tampini di domande", profile: "rompipalle" },
+                    { letter: "C", text: "Sai di essere la più bella della contea e che ti vuole", profile: "perfetta" },
+                    { letter: "D", text: "Ne parli tranquillamente e cerchi di capire", profile: "equilibrata" }
+                ]
+            },
+            {
+                id: 5,
+                code: "D5",
+                text: "Come messaggio d'auguri di compleanno non si sforza nemmeno più di tanto e li fa migliori persino a Rio, il suo cocorito, tu:",
+                options: [
+                    { letter: "A", text: "Lo spedisci a Nairobi a zappare", profile: "pazza" },
+                    { letter: "B", text: "Glielo dici tranquillamente che preferisci i messaggi smielati", profile: "perfetta" },
+                    { letter: "C", text: "Fino alla sera piazzi il muso lungo", profile: "rompipalle" },
+                    { letter: "D", text: "Non ti importa del messaggio e la vivi tranquillamente", profile: "equilibrata" }
+                ]
+            },
+            {
+                id: 6,
+                code: "D6",
+                text: "Non vi vedete per 2 sere, ti aspetti che almeno questa sera ci sia un incontro galante al ristorante dei Lucernari nella provincia di Foggia, ma spunta improvvisamente un calcetto, tu:",
+                options: [
+                    { letter: "A", text: "Lo fai andare a calcetto con la promessa di vedervi domani", profile: "equilibrata" },
+                    { letter: "B", text: "Lo spedisci con un missile su Uranio", profile: "rompipalle" },
+                    { letter: "C", text: "Scrivi al suo migliore amico", profile: "pazza" },
+                    { letter: "D", text: "Vai con lui a calcetto e poi state insieme poco dopo", profile: "perfetta" }
+                ]
+            },
+            {
+                id: 7,
+                code: "D7",
+                text: "Ha 1389 follower su Instagram, esce una sera in Corso Como coi suoi amici e torna la mattina dopo con 1393 follower, tu:",
+                options: [
+                    { letter: "A", text: "Cominci la perquisizione stile Digos", profile: "pazza" },
+                    { letter: "B", text: "Glielo domandi in tranquillità", profile: "equilibrata" },
+                    { letter: "C", text: "Non ti importa dei follower", profile: "perfetta" },
+                    { letter: "D", text: "Dalle 10 di mattina alle 15 del pomeriggio della settimana successiva glielo fai notare", profile: "rompipalle" }
+                ]
+            },
+            {
+                id: 8,
+                code: "D8",
+                text: "La tua acerrima rivale, finta amica di serate, mezza influencer e sua compagna di università a Chieti da quando stai con lui fa cose abbastanza strane e gli chiede di studiare insieme, tu:",
+                options: [
+                    { letter: "A", text: "Gli cambi residenza", profile: "pazza" },
+                    { letter: "B", text: "Hai fiducia in lui e sai che studieranno", profile: "equilibrata" },
+                    { letter: "C", text: "Gli dici che se va è finita", profile: "rompipalle" },
+                    { letter: "D", text: "L'importante è che ti dica la verità e che torni da te", profile: "perfetta" }
+                ]
+            },
+            {
+                id: 9,
+                code: "D9",
+                text: "Sono 3 mesi e mezzo che non ti regala una rosa e fate sempre le stesse cose, non percepisci una sua lontananza ma sembra tutto fermo come il tuo stipendio dal 1990, tu:",
+                options: [
+                    { letter: "A", text: "Gliene parli e cercate un compromesso", profile: "perfetta" },
+                    { letter: "B", text: "Metti una storia in bikini al mare di Grosseto e lo fai ammattire per i like che ricevi", profile: "pazza" },
+                    { letter: "C", text: "Lo riempi di sberle mentre parlate nel letto e non ti dà corda", profile: "rompipalle" },
+                    { letter: "D", text: "Senti quell'amore comunque che c'è e speri possa migliorare la situazione", profile: "equilibrata" }
+                ]
+            },
+            {
+                id: 10,
+                code: "D10",
+                text: "Quella sera dovevate uscire nel ristorante più bello di Milano, ma c'è l'Inter in semifinale di Coppa delle Zebre e lui al ristorante guarda più i nerazzurri che te:",
+                options: [
+                    { letter: "A", text: "Gli molli un ceffone", profile: "pazza" },
+                    { letter: "B", text: "Glielo dici educatamente di guardare meno l'Inter e più te", profile: "equilibrata" },
+                    { letter: "C", text: "Gli spegni il telefono e con il sorrisetto da assatanata lo intimi a finirla", profile: "rompipalle" },
+                    { letter: "D", text: "Ti va bene perché in fondo è lì con te", profile: "perfetta" }
+                ]
+            },
+            {
+                id: 11,
+                code: "D11",
+                text: "Nel gruppo in cui uscite c'è purtroppo questa fenomena dei social che si è vestita da sfilata di Gucci contemporanea e sembra Kylie Jenner, lui le fa un complimento e a te non lo fa dall'epoca del baratto, tu:",
+                options: [
+                    { letter: "A", text: "All'uscita dopo la sfilata la fai tu con un vestito mozzafiato", profile: "rompipalle" },
+                    { letter: "B", text: "Non percepisci competizione ma solo suo amore", profile: "equilibrata" },
+                    { letter: "C", text: "A casa lo sequestri come un prigioniero politico", profile: "pazza" },
+                    { letter: "D", text: "Ne parlate amabilmente di fronte a latte e biscotti con qualche frecciatina", profile: "perfetta" }
+                ]
+            },
+            {
+                id: 12,
+                code: "D12",
+                text: "Per il tuo compleanno espressamente gli fai capire che vuoi la borsa firmata dei tuoi sogni, non costa nemmeno tanto ma lui ti regala 10 rose e un pranzo al sushi ma di martedì così costa meno, tu:",
+                options: [
+                    { letter: "A", text: "Sei comunque felice per il pensiero", profile: "perfetta" },
+                    { letter: "B", text: "Vai al sushi il sabato sera col suo migliore amico", profile: "pazza" },
+                    { letter: "C", text: "Al sushi martedì glielo fai notare 890 volte", profile: "rompipalle" },
+                    { letter: "D", text: "Non ti importa più di tanto tuttavia parlate e lui capisce che ti sarebbe piaciuta la borsa", profile: "equilibrata" }
+                ]
+            },
+            {
+                id: 13,
+                code: "D13",
+                text: "Gli arriva un messaggio sospetto al cellulare all'una e quaranta mentre state dormendo. Lui solitamente dorme già alle 22 come un ghiro e quella cosa non ti va giù proprio, tu:",
+                options: [
+                    { letter: "A", text: "Gli controlli il telefono di nascosto", profile: "pazza" },
+                    { letter: "B", text: "Gli urli addosso dopo che ti dice che non vuole fartelo vedere", profile: "rompipalle" },
+                    { letter: "C", text: "Provi a parlargliene la mattina seguente di quella notifica", profile: "equilibrata" },
+                    { letter: "D", text: "Non hai sentito niente e comunque le notifiche son le sue", profile: "perfetta" }
+                ]
+            },
+            {
+                id: 14,
+                code: "D14",
+                text: "Il tuo istinto non sbaglia mai, e percepisci che c'è qualcosa che non va. La detective Conan ha colpito ancora eppure lui non vuole aprirsi con te, tu:",
+                options: [
+                    { letter: "A", text: "Gli fracassi l'anima finché non parla", profile: "rompipalle" },
+                    { letter: "B", text: "Lo coccoli più del solito e lo fai sentire meglio", profile: "perfetta" },
+                    { letter: "C", text: "Chiedi a tutte le tue amiche di indagare e di scovare qualcosa", profile: "pazza" },
+                    { letter: "D", text: "Gli fai capire come ti fa stare quella situazione di limbo e intavolate un discorso", profile: "equilibrata" }
+                ]
+            },
+            {
+                id: 15,
+                code: "D15",
+                text: "Torni a casa, convivete da ormai 6 mesi. Trovi come al solito un disordine allucinante e lui alla play che parla con il suo bro dell'ultima partita di FIFA, tu:",
+                options: [
+                    { letter: "A", text: "Il calcio glielo tiri sugli zigomi", profile: "pazza" },
+                    { letter: "B", text: "Lo inviti a chiudere quell'arnese e mettere a posto il disordine", profile: "equilibrata" },
+                    { letter: "C", text: "Inizi ad urlare perché ti ha fatto uscire dai gangheri e continui a stressarlo", profile: "rompipalle" },
+                    { letter: "D", text: "Ti siedi di fianco a lui, gli dai un bacio, lo guardi e gli dici di iniziare ora a riordinare", profile: "perfetta" }
+                ]
+            }
+        ];
+
+        // ==========================================
+        // 4. QUIZ STATE & NAVIGATION CONTROLLERS
+        // ==========================================
+        let prelimIndex = 0;
+        let mainIndex = 0;
+        let userPrelimAnswers = {};
+        let userMainAnswers = {};
+        let isTransitioning = false;
+        let lastDiagnosisSummary = "";
+
+        function showScreen(screenId) {
+            ['screen-welcome', 'screen-prelim', 'screen-doctor-banner', 'screen-main-quiz', 'screen-result'].forEach(id => {
+                const el = document.getElementById(id);
+                if (id === screenId) {
+                    el.classList.remove('hidden', 'fade-slide-enter');
+                    void el.offsetWidth; // trigger reflow for animation
+                    el.classList.add('fade-slide-enter');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- PRELIMINARY FLOW ---
+        function startPrelim(event) {
+            if (event) triggerClickSurprise(event, 'prelim');
+            prelimIndex = 0;
+            userPrelimAnswers = {};
+            userMainAnswers = {};
+            showScreen('screen-prelim');
+            renderPrelimQuestion();
+        }
+
+        function renderPrelimQuestion() {
+            const q = prelimQuestions[prelimIndex];
+            const container = document.getElementById('prelim-container');
+            document.getElementById('prelim-counter').innerText = `Domanda ${prelimIndex + 1} / 4`;
+            document.getElementById('prelim-progress-bar').style.width = `${((prelimIndex + 1) / prelimQuestions.length) * 100}%`;
+
+            const prevBtn = document.getElementById('prelim-prev-btn');
+            if (prelimIndex > 0) prevBtn.classList.remove('invisible');
+            else prevBtn.classList.add('invisible');
+
+            let html = `
+                <div class="space-y-4 fade-slide-enter">
+                    <h3 class="text-lg sm:text-2xl font-extrabold text-yellow-200 leading-snug">
+                        ${q.question}
+                    </h3>
+                    <div class="space-y-3 pt-1">
+            `;
+
+            q.options.forEach((opt, idx) => {
+                const isSelected = userPrelimAnswers[prelimIndex] === idx;
+                html += `
+                    <button type="button" onclick="selectPrelimOption(event, ${idx})" 
+                         class="option-card w-full text-left p-4 rounded-2xl border border-white/20 bg-white/5 cursor-pointer flex items-center justify-between gap-3 ${isSelected ? 'selected' : ''}">
+                        <div class="flex items-center gap-3.5">
+                            <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-pink-500 to-purple-700 border border-yellow-300/60 flex items-center justify-center text-xs sm:text-sm font-black text-yellow-200 shrink-0 shadow">
+                                ${opt.letter}
+                            </span>
+                            <span class="text-sm sm:text-base text-white font-semibold leading-snug">
+                                ${opt.text}
+                            </span>
+                        </div>
+                        <div class="w-6 h-6 rounded-full border-2 border-yellow-300/50 flex items-center justify-center shrink-0 ${isSelected ? 'bg-yellow-400 border-white' : ''}">
+                            ${isSelected ? '<i class="fa-solid fa-check text-xs text-purple-950"></i>' : '<i class="fa-solid fa-sparkles text-[10px] text-pink-300/60"></i>'}
+                        </div>
+                    </button>
+                `;
+            });
+
+            html += `</div></div>`;
+            container.innerHTML = html;
+        }
+
+        function selectPrelimOption(event, idx) {
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            userPrelimAnswers[prelimIndex] = idx;
+            triggerClickSurprise(event, 'prelim');
+            renderPrelimQuestion();
+
+            setTimeout(() => {
+                isTransitioning = false;
+                if (prelimIndex + 1 < prelimQuestions.length) {
+                    prelimIndex++;
+                    renderPrelimQuestion();
+                } else {
+                    showDoctorBanner();
+                }
+            }, 420);
+        }
+
+        function prevPrelim() {
+            if (prelimIndex > 0 && !isTransitioning) {
+                prelimIndex--;
+                renderPrelimQuestion();
+            }
+        }
+
+        // --- DOCTOR TRANSITION BANNER ---
+        function showDoctorBanner() {
+            playFairySound('fanfare');
+            showScreen('screen-doctor-banner');
+        }
+
+        function startMainQuiz(event) {
+            if (event) triggerClickSurprise(event, 'prelim');
+            mainIndex = 0;
+            showScreen('screen-main-quiz');
+            renderMainQuestion();
+        }
+
+        // --- MAIN 15 HYPOTHETICAL QUESTIONS FLOW ---
+        function renderMainQuestion() {
+            const q = mainQuestions[mainIndex];
+            const container = document.getElementById('main-question-container');
+            document.getElementById('main-counter').innerText = `${q.code} • Scenario ${mainIndex + 1} / 15`;
+            
+            const progressPct = ((mainIndex + 1) / mainQuestions.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progressPct}%`;
+
+            const prevBtn = document.getElementById('main-prev-btn');
+            if (mainIndex > 0) prevBtn.classList.remove('invisible');
+            else prevBtn.classList.add('invisible');
+
+            let html = `
+                <div class="space-y-4 fade-slide-enter">
+                    <div class="p-5 rounded-2xl bg-purple-950/60 border border-yellow-300/30 shadow-inner">
+                        <span class="inline-block px-3 py-0.5 rounded-full bg-pink-500/30 border border-pink-300/40 text-yellow-200 text-xs font-extrabold mb-2">
+                            Domanda ${q.code}
+                        </span>
+                        <h3 class="text-base sm:text-xl font-bold text-white leading-relaxed">
+                            ${q.text}
+                        </h3>
+                    </div>
+                    <div class="space-y-3">
+            `;
+
+            q.options.forEach((opt, idx) => {
+                const isSelected = userMainAnswers[mainIndex] === idx;
+                html += `
+                    <button type="button" onclick="selectMainOption(event, ${idx})" 
+                         class="option-card w-full text-left p-4 rounded-2xl border border-white/20 bg-white/5 cursor-pointer flex items-center justify-between gap-3 ${isSelected ? 'selected' : ''}">
+                        <div class="flex items-center gap-3.5">
+                            <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-pink-500 to-purple-700 border border-yellow-300/60 flex items-center justify-center text-xs sm:text-sm font-black text-yellow-200 shrink-0 shadow">
+                                ${opt.letter}
+                            </span>
+                            <span class="text-sm sm:text-base text-white font-semibold leading-snug">
+                                ${opt.text}
+                            </span>
+                        </div>
+                        <div class="w-6 h-6 rounded-full border-2 border-yellow-300/50 flex items-center justify-center shrink-0 ${isSelected ? 'bg-yellow-400 border-white' : ''}">
+                            ${isSelected ? '<i class="fa-solid fa-check text-xs text-purple-950"></i>' : '<i class="fa-solid fa-wand-sparkles text-[10px] text-yellow-200/60"></i>'}
+                        </div>
+                    </button>
+                `;
+            });
+
+            html += `</div></div>`;
+            container.innerHTML = html;
+        }
+
+        function selectMainOption(event, idx) {
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            userMainAnswers[mainIndex] = idx;
+            const chosenOpt = mainQuestions[mainIndex].options[idx];
+            triggerClickSurprise(event, chosenOpt.profile);
+            renderMainQuestion();
+
+            setTimeout(() => {
+                isTransitioning = false;
+                if (mainIndex + 1 < mainQuestions.length) {
+                    mainIndex++;
+                    renderMainQuestion();
+                } else {
+                    computeResult();
+                }
+            }, 440);
+        }
+
+        function prevMain() {
+            if (mainIndex > 0 && !isTransitioning) {
+                mainIndex--;
+                renderMainQuestion();
+            }
+        }
+
+        // ==========================================
+        // 5. FINAL DIAGNOSIS & RESULT SCREEN
+        // ==========================================
+        function computeResult() {
+            playFairySound('fanfare');
+
+            const counts = { pazza: 0, equilibrata: 0, perfetta: 0, rompipalle: 0 };
+            const total = mainQuestions.length;
+
+            mainQuestions.forEach((q, qIdx) => {
+                const ansIdx = userMainAnswers[qIdx];
+                if (ansIdx !== undefined) {
+                    const prof = q.options[ansIdx].profile;
+                    if (counts[prof] !== undefined) counts[prof]++;
+                }
+            });
+
+            // Determine dominant profile
+            let dominantKey = 'pazza';
+            let maxCount = -1;
+            ['pazza', 'rompipalle', 'equilibrata', 'perfetta'].forEach(key => {
+                if (counts[key] > maxCount) {
+                    maxCount = counts[key];
+                    dominantKey = key;
+                }
+            });
+
+            const percentages = {
+                pazza: Math.round((counts.pazza / total) * 100),
+                rompipalle: Math.round((counts.rompipalle / total) * 100),
+                equilibrata: Math.round((counts.equilibrata / total) * 100),
+                perfetta: Math.round((counts.perfetta / total) * 100)
+            };
+
+            const winner = PROFILES[dominantKey];
+            const winnerSvg = getWinxIllustrationSVG(dominantKey);
+
+            // Build preliminary context summary
+            const q1Ans = prelimQuestions[0].options[userPrelimAnswers[0] || 0].text;
+            const q2Ans = prelimQuestions[1].options[userPrelimAnswers[1] || 0].text;
+            const q3Ans = prelimQuestions[2].options[userPrelimAnswers[2] || 0].text;
+            const q4Ans = prelimQuestions[3].options[userPrelimAnswers[3] || 0].text;
+
+            lastDiagnosisSummary = `🧚‍♀️ RADIOGRAFIA DI COPPIA (Clinica di Alfea):\nIl mio Archetipo è: ${winner.name.toUpperCase()} (${percentages[dominantKey]}%)!\n✨ La mia Winx è: ${winner.winxShort} (${winner.winxTitle})!\n🔥 La Pazza (Bloom): ${percentages.pazza}% | ☀️ La Rompipalle (Stella): ${percentages.rompipalle}% | 🌊 L'Equilibrata (Aisha): ${percentages.equilibrata}% | 🌸 La Perfetta (Flora): ${percentages.perfetta}%`;
+
+            const container = document.getElementById('result-card-content');
+            container.innerHTML = `
+                <!-- GRAND WINX FAIRY REVEAL CARD -->
+                <div class="rounded-3xl p-6 sm:p-8 bg-gradient-to-br ${winner.gradient} border-4 border-yellow-300 shadow-[0_0_50px_rgba(255,215,0,0.6)] relative overflow-hidden">
+                    <!-- Decorative Sparkle Header -->
+                    <div class="text-center mb-6 space-y-2">
+                        <span class="inline-block px-4 py-1 rounded-full bg-black/45 border border-yellow-300 text-yellow-300 text-xs sm:text-sm font-black uppercase tracking-widest shadow">
+                            ✨ Trasformazione Enchantix Completata • Affinità ${percentages[dominantKey]}% (${counts[dominantKey]}/15) ✨
+                        </span>
+                        <h3 class="text-2xl sm:text-4xl md:text-5xl font-black text-white font-display tracking-wide drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
+                            SEI ${winner.name.toUpperCase()}!
+                        </h3>
+                        <p class="text-xl sm:text-3xl font-extrabold text-yellow-200 drop-shadow">
+                            🧚‍♀️ LA TUA WINX È: <span class="underline decoration-wavy decoration-pink-300">${winner.winxShort}</span>!
+                        </p>
+                        <p class="text-xs sm:text-sm text-pink-100 font-bold uppercase tracking-widest">
+                            ${winner.winxTitle}
+                        </p>
+                    </div>
+
+                    <!-- Winx Character Illustration + First-Person Speech Bubble -->
+                    <div class="flex flex-col md:flex-row items-center gap-6 sm:gap-8 relative z-10 bg-black/25 p-5 sm:p-6 rounded-3xl border border-white/20 backdrop-blur-md">
+                        <!-- Custom Winx SVG Avatar -->
+                        <div class="w-48 h-52 sm:w-56 sm:h-60 rounded-3xl bg-gradient-to-b from-white/15 to-black/40 border-2 border-yellow-300/80 p-2 flex flex-col items-center justify-center shrink-0 animate-float shadow-2xl relative">
+                            ${winnerSvg}
+                            <span class="absolute -bottom-3 bg-gradient-to-r from-yellow-300 to-amber-400 text-purple-950 font-black text-xs px-4 py-1 rounded-full border-2 border-white shadow-md">
+                                ${winner.icon} WINX: ${winner.winxShort}
+                            </span>
+                        </div>
+
+                        <!-- Winx Direct Speech & Diagnosis -->
+                        <div class="space-y-4 text-left flex-1">
+                            <!-- Speech Bubble from the Winx -->
+                            <div class="relative p-4 sm:p-5 rounded-2xl bg-white/95 text-purple-950 shadow-xl border-2 border-yellow-300">
+                                <div class="text-xs font-black uppercase tracking-wider text-pink-600 mb-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-comment-dots"></i> ${winner.winxShort} ti dice in faccia:
+                                </div>
+                                <p class="text-sm sm:text-base font-bold italic leading-relaxed text-purple-950">
+                                    ${winner.winxQuote}
+                                </p>
+                            </div>
+
+                            <!-- Power & Clinical Explanation -->
+                            <div class="space-y-2 text-white">
+                                <div class="text-xs sm:text-sm font-extrabold text-yellow-200">
+                                    ⚡ POTERE MAGICO DOMINANTE: <span class="text-white font-semibold">${winner.power}</span>
+                                </div>
+                                <p class="text-xs sm:text-sm text-pink-100 leading-relaxed font-medium">
+                                    ${winner.desc}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Doctor's Final Prescription -->
+                    <div class="mt-5 p-4 rounded-2xl bg-black/40 border border-yellow-300/50 text-yellow-100 text-xs sm:text-sm italic text-center">
+                        <strong>🩺 ${winner.advice}</strong>
+                    </div>
+                </div>
+
+                <!-- ALL 4 WINX ARCHETYPES BREAKDOWN -->
+                <div class="p-5 sm:p-6 rounded-3xl bg-purple-950/60 border border-white/15 space-y-5">
+                    <h4 class="text-base sm:text-lg font-extrabold text-yellow-300 flex items-center gap-2">
+                        <i class="fa-solid fa-wand-sparkles"></i> Il tuo DNA Winx Completo (Tutti i 4 Archetipi):
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        ${['pazza', 'rompipalle', 'equilibrata', 'perfetta'].map(key => {
+                            const p = PROFILES[key];
+                            const pct = percentages[key];
+                            const cnt = counts[key];
+                            const isWinner = key === dominantKey;
+                            return `
+                                <div class="p-4 rounded-2xl ${isWinner ? 'bg-white/15 border-2 border-yellow-300 shadow-lg' : 'bg-white/5 border border-white/10'} flex items-center gap-3.5">
+                                    <div class="w-14 h-16 rounded-xl bg-black/30 border border-yellow-300/40 p-1 shrink-0 flex items-center justify-center">
+                                        ${getWinxIllustrationSVG(key)}
+                                    </div>
+                                    <div class="flex-1 min-w-0 space-y-1.5">
+                                        <div class="flex items-center justify-between gap-1">
+                                            <span class="font-extrabold text-xs sm:text-sm text-white truncate">${p.icon} ${p.name} • <span class="text-yellow-300">${p.winxShort}</span></span>
+                                            <span class="text-xs font-black text-yellow-300 shrink-0">${pct}% (${cnt}/15)</span>
+                                        </div>
+                                        <div class="w-full h-2.5 bg-black/40 rounded-full overflow-hidden">
+                                            <div class="${p.barColor} h-full rounded-full transition-all duration-1000" style="width: ${pct}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <!-- Preliminary Anamnesis Summary Box -->
+                <div class="p-5 sm:p-6 rounded-3xl bg-white/5 border border-pink-400/25 space-y-3">
+                    <h4 class="text-sm sm:text-base font-extrabold text-pink-300 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-notes-medical text-yellow-300"></i> Scheda Anamnesi Preliminare
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+                        <div class="p-3 rounded-xl bg-black/25 border border-white/10">
+                            <span class="text-pink-300 block font-bold">1. Durata col piccolo lemure:</span>
+                            <span class="text-white font-semibold">${q1Ans}</span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/25 border border-white/10">
+                            <span class="text-pink-300 block font-bold">2. Incontro con l'amato opossum:</span>
+                            <span class="text-white font-semibold">${q2Ans}</span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/25 border border-white/10">
+                            <span class="text-pink-300 block font-bold">3. Chi si è esposto nel dramma napoletano:</span>
+                            <span class="text-white font-semibold">${q3Ans}</span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/25 border border-white/10">
+                            <span class="text-pink-300 block font-bold">4. Sopportazione paturnie eptadimensionali:</span>
+                            <span class="text-white font-semibold">${q4Ans}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Populate Answer Review Accordion
+            const reviewContainer = document.getElementById('review-container');
+            let reviewHtml = '';
+            mainQuestions.forEach((q, idx) => {
+                const chosen = q.options[userMainAnswers[idx] || 0];
+                const profObj = PROFILES[chosen.profile];
+                reviewHtml += `
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="font-bold text-yellow-300">${q.code}</span>
+                            <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${profObj.badgeClass} border">${profObj.icon} ${profObj.name}</span>
+                        </div>
+                        <p class="text-gray-300 text-xs">${q.text}</p>
+                        <p class="text-white font-semibold text-xs sm:text-sm pt-1">👉 Risposta ${chosen.letter}: "${chosen.text}"</p>
+                    </div>
+                `;
+            });
+            reviewContainer.innerHTML = reviewHtml;
+
+            showScreen('screen-result');
+        }
+
+        function toggleReviewAnswers() {
+            const rev = document.getElementById('review-container');
+            const chev = document.getElementById('review-chevron');
+            rev.classList.toggle('hidden');
+            chev.classList.toggle('rotate-180');
+        }
+
+        function restartQuiz(event) {
+            if (event) triggerClickSurprise(event, 'prelim');
+            prelimIndex = 0;
+            mainIndex = 0;
+            userPrelimAnswers = {};
+            userMainAnswers = {};
+            showScreen('screen-welcome');
+        }
+
+        function shareResult(event) {
+            if (event) triggerClickSurprise(event, 'perfetta');
+            const tempInput = document.createElement('textarea');
+            tempInput.value = lastDiagnosisSummary;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const toast = document.getElementById('reaction-toast');
+            document.getElementById('reaction-toast-icon').innerText = '📋';
+            document.getElementById('reaction-toast-text').innerText = 'Diagnosi copiata negli appunti! Incollala alle amiche ✨';
+            toast.classList.remove('opacity-0', '-translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', '-translate-y-4');
+            }, 2600);
+        }
+    </script>
+</body>
+</html>
